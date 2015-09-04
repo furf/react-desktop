@@ -1,0 +1,20 @@
+/* App */
+body {
+  background: #eee;
+}
+
+/* Components */
+.images {
+  overflow: hidden;
+}
+.image {
+  margin: 10px;
+  float: left;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.image img {
+  display: block;
+  border: 3px solid #fff;
+}
+
+/* Containers */

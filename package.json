@@ -1,0 +1,19 @@
+{
+  "name": "react-desktop",
+  "version": "1.0.0",
+  "description": "A boilerplate for building desktop apps with React and nw.js.",
+  "main": "index.html",
+  "scripts": {
+    "start": "nw"
+  },
+  "author": "@furf",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "chokidar": "^1.0.5",
+    "nw": "^0.12.3",
+    "react": "^0.13.3",
+    "react-redux": "^2.1.0",
+    "redux": "^2.0.0"
+  }
+}

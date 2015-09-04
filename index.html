@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>react-desktop</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./app/styles/app.css">
+  </head>
+  <body>
+    <main id="main" role="main"></main>
+    <script>
+
+    // Transfer window properties to global for use by traditionally
+    // browser-based software, including React.
+    global.window = window;
+    global.document = document;
+    global.navigator = navigator;
+
+    // Add an ES6/7 transpilation hook to require to allow us to write
+    // more future-forward software.
+    require('babel/register');
+
+    // Initialize the application.
+    require('./app');
+
+    </script>
+  </body>
+</html>
