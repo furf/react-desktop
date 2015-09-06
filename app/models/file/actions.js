@@ -13,15 +13,23 @@ export const REMOVE_FILE = 'REMOVE_FILE';
 
 
 /**
+ * Constant for mapping `updateFile` action to `updateFile` reducer.
+ * @type {String}
+ */
+export const UPDATE_FILE = 'UPDATE_FILE';
+
+
+/**
  * addFile action
  * @param {String} path
+ * @param {Object} stat
  */
-export function addFile(path) {
+export function addFile(path, stat) {
   return {
     type: ADD_FILE,
-    path,
+    file: Object.assign({}, stat, { path }),
   };
-}
+};
 
 
 /**
@@ -33,4 +41,17 @@ export function removeFile(path) {
     type: REMOVE_FILE,
     path,
   };
-}
+};
+
+
+/**
+ * updateFile action
+ * @param {String} path
+ * @param {Object} stat
+ */
+export function updateFile(path, stat) {
+  return {
+    type: UPDATE_FILE,
+    file: Object.assign({}, stat, { path }),
+  };
+};

@@ -1,20 +1,20 @@
 import React, {Component, StyleSheet} from 'react';
 import {connect} from 'react-redux';
-import ImagesComponent from '../components/images';
+import FilesComponent from '../components/files';
 
 class AppComponent extends Component {
 
   render() {
-    const {images} = this.props;
+    const {files} = this.props;
     return (
-      <ImagesComponent images={images} />
+      <FilesComponent files={files} />
     );
   }
 }
 
 function select(state) {
   return {
-    images: state.images
+    files: state.files
   };
 }
 

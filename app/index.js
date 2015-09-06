@@ -1,7 +1,19 @@
 import {combineReducers, createStore} from 'redux';
-import Watcher from './services/watcher'
-import path  from 'path';
-import File, {addFile, removeFile} from './models/file';
+import Watcher, {
+  ADD_EVENT,
+  CHANGE_EVENT,
+  UNLINK_EVENT,
+  ADD_DIR_EVENT,
+  UNLINK_DIR_EVENT,
+  ERROR_EVENT,
+  READY_EVENT,
+  RAW_EVENT,
+} from './services/watcher'
+import File, {
+  addFile,
+  removeFile,
+  updateFile,
+} from './models/file';
 import React from 'react';
 import {Provider} from 'react-redux';
 import App from './containers/App';
@@ -14,31 +26,48 @@ export default function(selector) {
 
   const cwd = process.cwd();
   const DATA_DIR = `${cwd}/data`;
-  const IMAGES_DIR = `${DATA_DIR}/images`;
-  const ADD_EVENT = 'add';
-  const UNLINK_EVENT = 'unlink';
+  const FILES_DIR = `${DATA_DIR}/files`;
 
   // Initialize the data store.
   const store = createStore(combineReducers({
-    images: File
+    files: File
   }));
 
   // Initialize the filesystem watcher.
-  new Watcher(IMAGES_DIR).on('all', function(event, file) {
+  const watcher = new Watcher(FILES_DIR);
 
-    const relativePath = path.relative(cwd, file);
+  // [
+  //   ADD_EVENT,
+  //   CHANGE_EVENT,
+  //   UNLINK_EVENT,
+  //   ADD_DIR_EVENT,
+  //   UNLINK_DIR_EVENT,
+  //   ERROR_EVENT,
+  //   READY_EVENT,
+  //   RAW_EVENT,
+  // ].forEach(event => {
+  //   watcher.on(event, console.log.bind(console, event));
+  // });
 
-    if (!relativePath) {
-      return;
-    }
+  watcher.on(ADD_EVENT, function(path, stat) {
+    store.dispatch(addFile(path, stat));
+  });
 
-    switch (event) {
-      case ADD_EVENT:
-        store.dispatch(addFile(relativePath));
-      break;
-      case UNLINK_EVENT:
-        store.dispatch(removeFile(relativePath));
-      break;
+  watcher.on(ADD_DIR_EVENT, function(path, stat) {
+    store.dispatch(addFile(path, stat));
+  });
+
+  watcher.on(UNLINK_EVENT, function(path, stat) {
+    store.dispatch(removeFile(path));
+  });
+
+  watcher.on(UNLINK_DIR_EVENT, function(path, stat) {
+    store.dispatch(removeFile(path));
+  });
+
+  watcher.on(RAW_EVENT, function(event, path, stats) {
+    if (event === CHANGE_EVENT) {
+      store.dispatch(updateFile(path, stats.curr));
     }
   });
 
