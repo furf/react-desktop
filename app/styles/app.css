@@ -19,6 +19,7 @@ body {
 .files th {
   font-weight: bold;
   text-align: left;
+  cursor: pointer;
 }
 
 .files td {
