@@ -36,19 +36,6 @@ export default function(selector) {
   // Initialize the filesystem watcher.
   const watcher = new Watcher(FILES_DIR);
 
-  // [
-  //   ADD_EVENT,
-  //   CHANGE_EVENT,
-  //   UNLINK_EVENT,
-  //   ADD_DIR_EVENT,
-  //   UNLINK_DIR_EVENT,
-  //   ERROR_EVENT,
-  //   READY_EVENT,
-  //   RAW_EVENT,
-  // ].forEach(event => {
-  //   watcher.on(event, console.log.bind(console, event));
-  // });
-
   watcher.on(ADD_EVENT, function(path, stat) {
     store.dispatch(addFile(path, stat));
   });
@@ -57,11 +44,11 @@ export default function(selector) {
     store.dispatch(addFile(path, stat));
   });
 
-  watcher.on(UNLINK_EVENT, function(path, stat) {
+  watcher.on(UNLINK_EVENT, function(path) {
     store.dispatch(removeFile(path));
   });
 
-  watcher.on(UNLINK_DIR_EVENT, function(path, stat) {
+  watcher.on(UNLINK_DIR_EVENT, function(path) {
     store.dispatch(removeFile(path));
   });
 
