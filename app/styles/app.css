@@ -1,9 +1,30 @@
 /* App */
 body {
   background: #eee;
+  font: 12px/1.5 menlo;
 }
 
+
 /* Components */
+.files {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.files th,
+.files td {
+  padding: .25em 1em;
+}
+
+.files th {
+  font-weight: bold;
+  text-align: left;
+}
+
+.files td {
+  border-top: 1px solid #ddd;
+  background: #fff;
+}
 
 
 /* Containers */

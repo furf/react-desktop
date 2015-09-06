@@ -14,6 +14,7 @@ import File, {
   removeFile,
   updateFile,
 } from './models/file';
+import path from 'path';
 import React from 'react';
 import {Provider} from 'react-redux';
 import App from './containers/App';
@@ -36,25 +37,34 @@ export default function(selector) {
   // Initialize the filesystem watcher.
   const watcher = new Watcher(FILES_DIR);
 
-  watcher.on(ADD_EVENT, function(path, stat) {
-    store.dispatch(addFile(path, stat));
+  function getRelativePath(absolutePath) {
+    return path.relative(cwd, absolutePath);
+  }
+
+  watcher.on(ADD_EVENT, function(absolutePath, stat) {
+    const relativePath = getRelativePath(absolutePath);
+    store.dispatch(addFile(relativePath, stat));
   });
 
-  watcher.on(ADD_DIR_EVENT, function(path, stat) {
-    store.dispatch(addFile(path, stat));
+  watcher.on(ADD_DIR_EVENT, function(absolutePath, stat) {
+    const relativePath = getRelativePath(absolutePath);
+    store.dispatch(addFile(relativePath, stat));
   });
 
-  watcher.on(UNLINK_EVENT, function(path) {
-    store.dispatch(removeFile(path));
+  watcher.on(UNLINK_EVENT, function(absolutePath) {
+    const relativePath = getRelativePath(absolutePath);
+    store.dispatch(removeFile(relativePath));
   });
 
-  watcher.on(UNLINK_DIR_EVENT, function(path) {
-    store.dispatch(removeFile(path));
+  watcher.on(UNLINK_DIR_EVENT, function(absolutePath) {
+    const relativePath = getRelativePath(absolutePath);
+    store.dispatch(removeFile(relativePath));
   });
 
-  watcher.on(RAW_EVENT, function(event, path, stats) {
+  watcher.on(RAW_EVENT, function(event, absolutePath, stats) {
     if (event === CHANGE_EVENT) {
-      store.dispatch(updateFile(path, stats.curr));
+      const relativePath = getRelativePath(absolutePath);
+      store.dispatch(updateFile(relativePath, stats.curr));
     }
   });
 
